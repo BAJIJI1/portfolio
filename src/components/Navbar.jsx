@@ -16,6 +16,19 @@ export default function Navbar({ isDark, setIsDark, onLogoClick }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Closing the mobile menu re-renders the page at the same moment the
+  // browser's native anchor jump tries to smooth-scroll — that re-render
+  // interrupts the in-progress scroll and leaves the page at the top.
+  // Closing the menu first, then scrolling on the next frame (once the
+  // DOM has settled), avoids the race.
+  function handleMobileNavClick(e, href) {
+    e.preventDefault();
+    setMobileOpen(false);
+    requestAnimationFrame(() => {
+      document.querySelector(href)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -87,7 +100,7 @@ export default function Navbar({ isDark, setIsDark, onLogoClick }) {
                 >
                   <a
                     href={link.href}
-                    onClick={() => setMobileOpen(false)}
+                    onClick={(e) => handleMobileNavClick(e, link.href)}
                     className="group flex items-center gap-3 py-3.5 text-lg font-semibold text-navy dark:text-white hover:text-emerald transition-colors"
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald scale-0 group-hover:scale-100 transition-transform" />
