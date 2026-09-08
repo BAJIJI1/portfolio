@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-navy: #1f3864;
+  --color-navy-light: #2d4d85;
+  --color-emerald: #10b981;
+  --color-emerald-dark: #059669;
+  --color-bg-light: #ffffff;
+  --color-bg-light-alt: #f8fafc;
+  --color-bg-dark: #0b1220;
+  --color-bg-dark-alt: #0f1b2e;
+  --color-body-light: #1f2937;
+  --color-body-dark: #e5e7eb;
+  --color-muted: #64748b;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Fira Code", monospace;
+  --font-vision: "Times New Roman", Times, serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg-light);
+  color: var(--color-body-light);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+  background-color: var(--color-bg-dark);
+  color: var(--color-body-dark);
+}
+
+::selection {
+  background-color: var(--color-emerald);
+  color: #ffffff;
+}
+
+/* Thin scrollbar, brand-tinted */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-emerald);
+  border-radius: 9999px;
+}
+
+.text-gradient-brand {
+  background: linear-gradient(90deg, var(--color-navy), var(--color-emerald));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.dark .text-gradient-brand {
+  background: linear-gradient(90deg, #7fa1e0, var(--color-emerald));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Rotating gradient ring — animates the gradient's angle, not the element's
+   transform, so a square/squircle shape doesn't swing its corners outside
+   the ring on rotation. */
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotate-gradient-angle {
+  to {
+    --gradient-angle: 360deg;
+  }
+}
+
+.animate-gradient-ring {
+  background: conic-gradient(
+    from var(--gradient-angle),
+    var(--color-navy),
+    var(--color-emerald),
+    var(--color-navy),
+    var(--color-emerald),
+    var(--color-navy)
+  );
+  animation: rotate-gradient-angle 8s linear infinite;
+}
+
+/* Light sweep for the footer's oversized background name */
+@keyframes footer-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -60% 0;
+  }
+}
+
+.animate-footer-shimmer {
+  animation: footer-shimmer 4s ease-in-out infinite;
+}
