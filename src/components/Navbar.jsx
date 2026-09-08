@@ -48,11 +48,11 @@ export default function Navbar({ isDark, setIsDark, onLogoClick }) {
           </ul>
         </div>
 
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end gap-1">
           <button
             onClick={() => setIsDark((d) => !d)}
             aria-label="Toggle dark mode"
-            className="hidden lg:inline-flex p-2 rounded-full text-navy dark:text-body-dark hover:bg-navy/5 dark:hover:bg-white/10 transition-colors"
+            className="inline-flex p-2 rounded-full text-navy dark:text-body-dark hover:bg-navy/5 dark:hover:bg-white/10 transition-colors"
           >
             {isDark ? <HiOutlineSun size={18} /> : <HiOutlineMoon size={18} />}
           </button>
@@ -62,7 +62,7 @@ export default function Navbar({ isDark, setIsDark, onLogoClick }) {
             className="lg:hidden p-2 text-navy dark:text-white"
             aria-label="Toggle menu"
           >
-            {mobileOpen ? <HiOutlineX size={24} /> : <HiOutlineMenu size={24} />}
+            {mobileOpen ? <HiOutlineX size={30} /> : <HiOutlineMenu size={30} />}
           </button>
         </div>
       </nav>
@@ -76,27 +76,25 @@ export default function Navbar({ isDark, setIsDark, onLogoClick }) {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="lg:hidden overflow-hidden bg-bg-light dark:bg-bg-dark border-b border-navy/10 dark:border-white/10"
           >
-            <ul className="flex flex-col px-5 py-4 gap-1">
-              {navLinks.map((link) => (
-                <li key={link.href}>
+            <ul className="flex flex-col px-5 py-3">
+              {navLinks.map((link, i) => (
+                <motion.li
+                  key={link.href}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
+                  className="border-b border-navy/5 dark:border-white/5 last:border-0"
+                >
                   <a
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block py-2.5 text-body-light dark:text-body-dark hover:text-emerald transition-colors"
+                    className="group flex items-center gap-3 py-3.5 text-lg font-semibold text-navy dark:text-white hover:text-emerald transition-colors"
                   >
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald scale-0 group-hover:scale-100 transition-transform" />
                     {link.label}
                   </a>
-                </li>
+                </motion.li>
               ))}
-              <li className="pt-3">
-                <button
-                  onClick={() => setIsDark((d) => !d)}
-                  className="p-2 rounded-full text-navy dark:text-body-dark hover:bg-navy/5 dark:hover:bg-white/10 transition-colors"
-                  aria-label="Toggle dark mode"
-                >
-                  {isDark ? <HiOutlineSun size={18} /> : <HiOutlineMoon size={18} />}
-                </button>
-              </li>
             </ul>
           </motion.div>
         )}
